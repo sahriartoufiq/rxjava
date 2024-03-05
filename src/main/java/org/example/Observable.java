@@ -17,6 +17,7 @@ public class Observable<T> implements ObservableSource<T> {
 
     @Override
     public void subscribe(Observer<? super T> observer) {
+
         // Create a subscription for this observer
         Disposable subscription = new Subscription();
 
@@ -25,28 +26,31 @@ public class Observable<T> implements ObservableSource<T> {
     }
 
     public <R> Observable<R> map(Function<? super T, ? extends R> mapper) {
+
         return create((observer, disposable) -> {
+
             // Modified subscribe logic to apply map transformation
-            source.subscribe(
-                    new Observer<T>() {
-                        @Override
-                        public void onNext(T value) {
-                            R transformedValue = mapper.apply(value);
-                            observer.onNext(transformedValue);
-                        }
+            source
+                    .subscribe(new Observer<T>() {
 
-                        @Override
-                        public void onError(Throwable throwable) {
-                            observer.onError(throwable);
-                        }
+                                   @Override
+                                   public void onNext(T value) {
+                                       R transformedValue = mapper.apply(value);
+                                       observer.onNext(transformedValue);
+                                   }
 
-                        @Override
-                        public void onComplete() {
-                            observer.onComplete();
-                        }
-                    },
-                    disposable
-            );
+                                   @Override
+                                   public void onError(Throwable throwable) {
+                                       observer.onError(throwable);
+                                   }
+
+                                   @Override
+                                   public void onComplete() {
+                                       observer.onComplete();
+                                   }
+                               },
+                            disposable
+                    );
         });
     }
 
@@ -54,27 +58,29 @@ public class Observable<T> implements ObservableSource<T> {
         return create((observer, disposable) -> {
 
             // Modified subscribe logic to apply filter
-            source.subscribe(
-                    new Observer<T>() {
-                        @Override
-                        public void onNext(T value) {
-                            if (predicate.test(value)) {
-                                observer.onNext(value);
-                            }
-                        }
+            source
+                    .subscribe(new Observer<T>() {
 
-                        @Override
-                        public void onError(Throwable throwable) {
-                            observer.onError(throwable);
-                        }
+                                   @Override
+                                   public void onNext(T value) {
 
-                        @Override
-                        public void onComplete() {
-                            observer.onComplete();
-                        }
-                    },
-                    disposable
-            );
+                                       if (predicate.test(value)) {
+                                           observer.onNext(value);
+                                       }
+                                   }
+
+                                   @Override
+                                   public void onError(Throwable throwable) {
+                                       observer.onError(throwable);
+                                   }
+
+                                   @Override
+                                   public void onComplete() {
+                                       observer.onComplete();
+                                   }
+                               },
+                            disposable
+                    );
         });
     }
 }

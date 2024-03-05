@@ -3,15 +3,18 @@ package org.example;
 public class Main {
 
     public static void main(String[] args) {
+
         Observable<String> observable = Observable
                 .create((observer, disposable) -> {
+
                     observer.onNext("One");
                     observer.onNext("Two");
                     observer.onNext("Three");
                     observer.onComplete();
                 });
 
-        Observer<String> observer = new Observer<String>() {
+        Observer<String> observer = new Observer<>() {
+
             @Override
             public void onNext(String value) {
                 System.out.println("Received: " + value);
