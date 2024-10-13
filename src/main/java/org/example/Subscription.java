@@ -1,6 +1,7 @@
 package org.example;
 
 public class Subscription implements Disposable {
+
     private boolean disposed = false;
 
     @Override
