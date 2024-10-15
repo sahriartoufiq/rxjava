@@ -55,6 +55,7 @@ public class Observable<T> implements ObservableSource<T> {
     }
 
     public Observable<T> filter(Predicate<? super T> predicate) {
+
         return create((observer, disposable) -> {
 
             // Modified subscribe logic to apply filter
