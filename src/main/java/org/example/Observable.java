@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 public class Observable<T> implements ObservableSource<T> {
 
-    private ObservableOnSubscribe<T> source;
+    private final ObservableOnSubscribe<T> source;
 
     private Observable(ObservableOnSubscribe<T> source) {
         this.source = source;
